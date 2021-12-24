@@ -47,4 +47,4 @@ jobs:
 
     - name: pull from dvc
       run: |
-          dvc pull
+          dvc pull data -R
