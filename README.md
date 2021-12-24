@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Working in a command line environment is recommended for ease of use with git and dvc. If on Windows, WSL1 or 2 is recommended.
 
 # Environment Set up
@@ -43,3 +44,7 @@ Working in a command line environment is recommended for ease of use with git an
     * Hint: think about how paths will differ in your local environment vs. on Heroku.
     * Hint: development in Python is fast! But how fast you can iterate slows down if you rely on your CI/CD to fail before fixing an issue. I like to run flake8 locally before I commit changes.
 * Write a script that uses the requests module to do one POST on your live API.
+=======
+# ml-heroku-fastapi
+Publish a ML on Heroku with FastAPI
+>>>>>>> 1847fc1e41e603a0c6979411b0c3130187312de9
