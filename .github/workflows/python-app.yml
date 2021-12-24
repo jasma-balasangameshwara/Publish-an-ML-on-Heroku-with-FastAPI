@@ -38,3 +38,7 @@ jobs:
         aws-secret-access-key: WSLSOKFNfagVO8gUy6r404RfwccDKbtKRo3VN+ft
         aws-session-token: FwoGZXIvYXdzEHAaDOxukYqpaq9sCrK72CK8AbEfAmGzJDywciaBJDLQxEphdluVlRXg1rPJyxZDCWQTTwFGW699rYMBEumOaXxi70pnev+/6ZdUZ+U1gtyeK/7qweiwsHq0SgqUXSdS97LNzZrXPUwYIC1ZRHf6Ysg+AoeX8Ot3TcRd5XgqVDQCAIu+b20cOdNJ2xkJVy6knId2CWrQyOpypj1xjm9y7UNO3lIkZQrII5JUiV9xRm5gFfr+Jfg2YYhLsalxViH3PftUJK6ZFVW6eR0DaNBzKLnblY4GMi1/6oayFlhLFY3GymNg9D3BW+VG4aaYSqpCDxeTf6XZyksu6HqHqudiKSz1IEI=
         aws-region: us-east-1
+    - name: Setup DVC
+      uses: iterative/setup-dvc@v1
+    - name: Pull data from DVC
+      run: dvc pull data
