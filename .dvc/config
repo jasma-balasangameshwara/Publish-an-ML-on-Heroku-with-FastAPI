@@ -1,2 +1,5 @@
+[core]
+    remote = s3-remote
+    
 ['remote "s3-remote"']
-    url = s3://ml-heroku-fastapi-bucket/storage
+    url = s3://ml-heroku-fastapi-bucket
