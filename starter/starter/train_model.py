@@ -3,6 +3,7 @@
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import fbeta_score, precision_score, recall_score
 from joblib import dump
 from starter.eda import clean
 import scipy
@@ -46,3 +47,12 @@ def train_predict():
     dump(model,
          "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/model.joblib")
     return model, y_predicted
+
+
+def metrics():
+    _, _, y = data_split()
+    _, predicted = train_predict()
+    fbeta = fbeta_score(y, predicted, beta=1, zero_division=1)
+    precision = precision_score(y, predicted, zero_division=1)
+    recall = recall_score(y, predicted, zero_division=1)
+    return precision, recall, fbeta
