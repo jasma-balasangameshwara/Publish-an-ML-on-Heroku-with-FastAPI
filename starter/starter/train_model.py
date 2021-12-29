@@ -12,7 +12,7 @@ import numpy as np
 # Add the necessary imports for the starter code.
 
 # Add code to load in the data.
-def train_test():
+def data_split():
     data = clean(
         "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/data/raw/census.csv",
         "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/data/processed/cleaned_census.csv")
@@ -21,7 +21,7 @@ def train_test():
 
 
 def train_predict():
-    data, train, test = train_test()
+    data, train, test = data_split()
     categorical_features = [
         "workclass",
         "education",
