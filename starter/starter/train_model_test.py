@@ -6,13 +6,13 @@ from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 
 def test_data_split():
-    data, train, _ = starter.starter.train_model.data_split()
+    data, train, _, _ = starter.starter.train_model.data_split()
     assert len(data) != 0
     assert len(train) != 0
 
 
-def test_train_predict_1():
-    _, train, _ = starter.starter.train_model.data_split()
+def test_model_train_1():
+    _, train, _, _ = starter.starter.train_model.data_split()
     categorical_features = [
         "workclass",
         "education",
@@ -31,8 +31,8 @@ def test_train_predict_1():
     assert len(x_categorical) != 0
 
 
-def test_train_predict_2():
-    _, train, test = starter.starter.train_model.data_split()
+def test_model_train_2():
+    _, train, test, _ = starter.starter.train_model.data_split()
     categorical_features = [
         "workclass",
         "education",
