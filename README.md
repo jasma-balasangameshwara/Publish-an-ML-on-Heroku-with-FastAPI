@@ -1,4 +1,4 @@
-Udacity Ml Ops Nanodegree Project - 3 Assignment Submission
+Udacity ML Ops Nanodegree Project - 3 Assignment Submission
 
 # Environment Set up
 * Download and install conda if you don’t have it already.
