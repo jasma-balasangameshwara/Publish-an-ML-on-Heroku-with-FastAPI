@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-Working in a command line environment is recommended for ease of use with git and dvc. If on Windows, WSL1 or 2 is recommended.
+Udacity Ml Ops Nanodegree Project - 3 Assignment Submission
 
 # Environment Set up
 * Download and install conda if you don’t have it already.
@@ -46,5 +45,5 @@ Working in a command line environment is recommended for ease of use with git an
 * Write a script that uses the requests module to do one POST on your live API.
 =======
 # ml-heroku-fastapi
-Publish a ML on Heroku with FastAPI
->>>>>>> 1847fc1e41e603a0c6979411b0c3130187312de9
+Publish an ML on Heroku with FastAPI
+
