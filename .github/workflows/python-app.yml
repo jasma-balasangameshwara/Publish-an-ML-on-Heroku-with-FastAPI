@@ -34,14 +34,6 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ASIAZG6YHDX42V2TTIHU
-        aws-secret-access-key: WSLSOKFNfagVO8gUy6r404RfwccDKbtKRo3VN+ft
-        aws-session-token: FwoGZXIvYXdzEHAaDOxukYqpaq9sCrK72CK8AbEfAmGzJDywciaBJDLQxEphdluVlRXg1rPJyxZDCWQTTwFGW699rYMBEumOaXxi70pnev+/6ZdUZ+U1gtyeK/7qweiwsHq0SgqUXSdS97LNzZrXPUwYIC1ZRHf6Ysg+AoeX8Ot3TcRd5XgqVDQCAIu+b20cOdNJ2xkJVy6knId2CWrQyOpypj1xjm9y7UNO3lIkZQrII5JUiV9xRm5gFfr+Jfg2YYhLsalxViH3PftUJK6ZFVW6eR0DaNBzKLnblY4GMi1/6oayFlhLFY3GymNg9D3BW+VG4aaYSqpCDxeTf6XZyksu6HqHqudiKSz1IEI=
-        aws-region: us-east-1
-        
     - name: Setup DVC
       uses: iterative/setup-dvc@v1
       
@@ -49,3 +41,13 @@ jobs:
       run: |
         dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket
         dvc pull
+    
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_Access_Key_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_Secret_Access_Key }}
+        aws-region: us-east-1
+        
+    - name: Run pytest
+      run: pytest
