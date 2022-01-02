@@ -1,12 +1,10 @@
 # Put the code for your API here.
 import os
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
 # BaseModel from Pydantic is used to define data objects.
-from pydantic import BaseModel, Field
-from joblib import load
+from pydantic import BaseModel
 
-from starter.train_model import score, model_train
+from starter.train_model import score
 
 
 app = FastAPI()
