@@ -8,31 +8,21 @@ from joblib import load
 
 from starter.train_model import score, model_train
 
-app = FastAPI()
 
-CAT_FEATURES = [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
-]
+app = FastAPI()
 
 
 class Person(BaseModel):
-    age: int = Field(..., example=32)
-    workclass: str = Field(..., example="Private")
-    education: str = Field(..., example="Assoc-acdm")
-    marital_status: str = Field(..., example="Never-married")
-    occupation: str = Field(..., example="Sales")
-    relationship: str = Field(..., example="Not-in-family")
-    race: str = Field(..., example="Black")
-    sex: str = Field(..., example="Male")
-    hours_per_week: int = Field(..., example=50)
-    native_country: str = Field(..., example="United-States")
+    age: int
+    workclass: str
+    education: str
+    marital_status: str
+    occupation: str
+    relationship: str
+    race: str
+    sex: str
+    hours_per_week: int
+    native_country: str
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
@@ -50,9 +40,7 @@ def index():
     return {"Welcome"}
 
 
-@app.post('/prediction')
-async def predict_income(inputrow: Person):
-    row_dict = jsonable_encoder(inputrow)
-    prediction = score(row_dict)
-
+@app.post("/prediction/")
+async def predict_salary(data: Person):
+    prediction = score(data)
     return {"salary": prediction}

@@ -2,20 +2,33 @@ import pytest
 from fastapi.testclient import TestClient
 from main import app
 
-
-@pytest.fixture
-def home():
-    api = TestClient(app)
-    return api
+home = TestClient(app)
 
 
-def test_get(home):
+def test_index():
     connect = home.get("/")
     assert connect.status_code == 200
     assert connect.json() == ["Welcome"]
 
 
-def test_post_1(home):
+def test_predict_salary_1():
+    data = {
+        "age": 32,
+        "workclass": "Private",
+        "education": "Assoc-acdm",
+        "maritalStatus": "Never-married",
+        "occupation": "Sales",
+        "relationship": "Not-in-family",
+        "race": "Black",
+        "sex": "Male",
+        "hoursPerWeek": 50,
+        "nativeCountry": "United-States"
+    }
+    connect = home.post("/prediction/", json=data).json()
+    assert connect
+
+
+def test_post_2():
     connect = home.post("/prediction/", json={
         "age": 32,
         "workclass": "Private",
@@ -27,21 +40,5 @@ def test_post_1(home):
         "sex": "Male",
         "hoursPerWeek": 50,
         "nativeCountry": "United-States"
-    })
-    assert connect.status_code == 307
-
-
-def test_post_2(home):
-    connect = home.post("/prediction", json={
-        "age": 32,
-        "workclass": "Private",
-        "education": "Assoc-acdm",
-        "maritalStatus": "Never-married",
-        "occupation": "Sales",
-        "relationship": "Not-in-family",
-        "race": "Black",
-        "sex": "Male",
-        "hoursPerWeek": 50,
-        "nativeCountry": "United-States"
-    })
-    assert connect.status_code == 422
+    }).json()
+    assert connect
