@@ -28,7 +28,7 @@ def test_predict_salary_1():
     assert connect
 
 
-def test_post_2():
+def test_predict_salary_2():
     connect = home.post("/prediction/", json={
         "age": 32,
         "workclass": "Private",
