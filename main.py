@@ -4,7 +4,7 @@ from fastapi import FastAPI
 # BaseModel from Pydantic is used to define data objects.
 from pydantic import BaseModel
 
-from starter.train_model import score
+from starter.starter.train_model import score
 
 
 app = FastAPI()
