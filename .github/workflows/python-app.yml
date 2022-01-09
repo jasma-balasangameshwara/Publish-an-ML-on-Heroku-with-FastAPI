@@ -48,7 +48,6 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_Access_Key_ID }}
         aws-secret-access-key: ${{ secrets.AWS_Secret_Access_Key }}
         aws-region: us-east-1
-        role-to-assume: arn:aws:iam::633424256505:user/jasma
         
     - name: Run pytest
       run: pytest
