@@ -17,3 +17,6 @@ response = requests.post(
     url='https://ml-heroku-fastapi.herokuapp.com/prediction/',
     json=data
 )
+
+print(response.status_code)
+print(response.url)

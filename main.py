@@ -2,7 +2,7 @@
 import os
 from fastapi import FastAPI
 # BaseModel from Pydantic is used to define data objects.
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from starter.starter.train_model import score
 
@@ -11,16 +11,16 @@ app = FastAPI()
 
 
 class Person(BaseModel):
-    age: int
-    workclass: str
-    education: str
-    marital_status: str
-    occupation: str
-    relationship: str
-    race: str
-    sex: str
-    hours_per_week: int
-    native_country: str
+    age: int = Field(..., example=32)
+    workclass: str = Field(..., example="Private")
+    education: str = Field(..., example="Assoc-acdm")
+    marital_status: str = Field(..., example="Never-married")
+    occupation: str = Field(..., example="Sales")
+    relationship: str = Field(..., example="Not-in-family")
+    race: str = Field(..., example="Black")
+    sex: str = Field(..., example="Female")
+    hours_per_week: int = Field(..., example=50)
+    native_country: str = Field(..., example="United-States")
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
