@@ -1,18 +1,18 @@
 import pandas as pd
 import numpy as np
 import pytest
-import starter.starter.train_model
+import train_model
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 
 def test_data_split():
-    data, train, _, _ = starter.starter.train_model.data_split()
+    data, train, _, _ = train_model.data_split()
     assert len(data) != 0
     assert len(train) != 0
 
 
 def test_model_train_1():
-    _, train, _, _ = starter.starter.train_model.data_split()
+    _, train, _, _ = train_model.data_split()
     categorical_features = [
         "workclass",
         "education",
@@ -32,7 +32,7 @@ def test_model_train_1():
 
 
 def test_model_train_2():
-    _, train, test, _ = starter.starter.train_model.data_split()
+    _, train, test, _ = train_model.data_split()
     categorical_features = [
         "workclass",
         "education",

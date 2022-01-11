@@ -16,8 +16,8 @@ import logging
 # Add code to load in the data.
 def data_split():
     data = clean(
-        "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/data/raw/census.csv",
-        "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/data/processed/cleaned_census.csv")
+        "data/raw/census.csv",
+        "data/processed/cleaned_census.csv")
     train_set, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
@@ -58,21 +58,21 @@ def model_train():
     model = GradientBoostingClassifier(n_estimators=100)
     model.fit(x_train, y_train)
     dump(model,
-         "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/model.joblib")
+         "model/model.joblib")
     dump(encoder,
-         "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/encoder.joblib")
+         "model/encoder.joblib")
     dump(lb,
-         "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/lb.joblib")
+         "model/lb.joblib")
 
 
 def score(test):
     _, _, _, categorical_features = data_split()
     model = load(
-        "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/model.joblib")
+        "model/model.joblib")
     encoder = load(
-        "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/encoder.joblib")
+        "model/encoder.joblib")
     lb = load(
-        "D:/CAREER TRANSITION/Udacity/MLOps - Nanodegree/Capstone Projects/FastAPI/nd0821-c3-starter-code-master/starter/model/lb.joblib")
+        "model/lb.joblib")
     for each_category in categorical_features:
         for index in test[each_category]:
             unique_df = test[test[each_category] == index]
