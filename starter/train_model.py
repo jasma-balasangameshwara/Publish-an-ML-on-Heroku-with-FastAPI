@@ -1,4 +1,3 @@
-# Script to train machine learning model.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
@@ -73,8 +72,9 @@ def score(test, model, encoder, lb):
         "race",
         "sex",
         "native-country", ]
+    sliced = []
     for each_category in categorical_features:
-        for index in test[each_category]:
+        for index in test[each_category].unique():
             unique_df = test[test[each_category] == index]
             x_test, y_test, _, _ = process_data(unique_df, training=False, encoder=encoder, lb=lb)
 
@@ -84,10 +84,14 @@ def score(test, model, encoder, lb):
             precision = precision_score(y_test, pred_y, zero_division=1)
             recall = recall_score(y_test, pred_y, zero_division=1)
 
-
-
             print(fbeta, precision, recall)
             logging.info(fbeta, precision, recall)
+            line = str(each_category) + str(index) + str(fbeta) + str(precision) + str(recall)
+            sliced.append(line)
+    with open('data/raw/slice_output.txt', 'w') as out:
+        for value in sliced:
+            out.write(value + '\n')
+
     return '>50K' if pred_y[0] else '<=50K'
 
 
