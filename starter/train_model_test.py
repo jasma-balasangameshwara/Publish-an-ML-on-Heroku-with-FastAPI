@@ -6,9 +6,8 @@ from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
 
 def test_data_split():
-    data, train, _, _ = train_model.data_split()
+    data = 'data/raw/census.csv'
     assert len(data) != 0
-    assert len(train) != 0
 
 
 def test_model_train_1():
