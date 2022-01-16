@@ -50,6 +50,4 @@ jobs:
         dvc pull
         
     - name: Run pytest
-      env:
-        DB_URL: ${{ github.workplace }}/ml-heroku-fastapi/starter/data/raw/census.csv
       run: pytest
