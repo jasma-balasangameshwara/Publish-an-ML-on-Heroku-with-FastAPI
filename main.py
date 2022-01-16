@@ -3,8 +3,9 @@ import os
 from fastapi import FastAPI
 # BaseModel from Pydantic is used to define data objects.
 from pydantic import BaseModel, Field
-
+from fastapi.encoders import jsonable_encoder
 from starter.train_model import score
+from joblib import dump, load
 
 
 app = FastAPI()
@@ -36,10 +37,18 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 
 @app.get("/")
 def index():
-    return {"Welcome"}
+    return {"Welcome Success"}
 
 
-@app.post("/prediction/")
+@app.post("/prediction")
 async def predict_salary(data: Person):
-    prediction = score(data)
+    data_json = jsonable_encoder(data)
+    model = load(
+        "starter/model/model.joblib")
+    encoder = load(
+        "starter/model/encoder.joblib")
+    lb = load(
+        "starter/model/lb.joblib")
+    prediction = score(data_json, model, encoder, lb)
+    assert prediction == "<=50K"
     return {"salary": prediction}

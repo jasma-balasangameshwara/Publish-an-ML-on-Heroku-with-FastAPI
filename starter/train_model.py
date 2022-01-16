@@ -63,14 +63,16 @@ def model_train():
          "model/lb.joblib")
 
 
-def score(test):
-    _, _, _, categorical_features = data_split()
-    model = load(
-        "model/model.joblib")
-    encoder = load(
-        "model/encoder.joblib")
-    lb = load(
-        "model/lb.joblib")
+def score(test, model, encoder, lb):
+    categorical_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country", ]
     for each_category in categorical_features:
         for index in test[each_category]:
             unique_df = test[test[each_category] == index]
@@ -82,12 +84,20 @@ def score(test):
             precision = precision_score(y_test, pred_y, zero_division=1)
             recall = recall_score(y_test, pred_y, zero_division=1)
 
+
+
             print(fbeta, precision, recall)
             logging.info(fbeta, precision, recall)
-            return '>50K' if pred_y[0] else '<=50K'
+    return '>50K' if pred_y[0] else '<=50K'
 
 
 if __name__ == '__main__':
     model_train()
     _, _, tests, _ = data_split()
-    score(tests)
+    model1 = load(
+        "model/model.joblib")
+    encoder1 = load(
+        "model/encoder.joblib")
+    lb1 = load(
+        "model/lb.joblib")
+    score(tests, model1, encoder1, lb1)

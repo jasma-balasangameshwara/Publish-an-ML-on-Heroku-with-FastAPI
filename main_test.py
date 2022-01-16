@@ -8,7 +8,7 @@ home = TestClient(app)
 def test_index():
     connect = home.get("/")
     assert connect.status_code == 200
-    assert connect.json() == ["Welcome"]
+    assert connect.json() == ["Welcome Success"]
 
 
 def test_predict_salary_1():
@@ -24,12 +24,13 @@ def test_predict_salary_1():
         "hoursPerWeek": 50,
         "nativeCountry": "United-States"
     }
-    connect = home.post("/prediction/", json=data)
+    connect = home.post("/prediction", json=data)
     assert connect.status_code == 200
+    assert connect.json() == {"salary": "<=50K"}
 
 
 def test_predict_salary_2():
-    connect = home.post("/prediction/", json={
+    connect = home.post("/prediction", json={
         "age": 32,
         "workclass": "Private",
         "education": "Assoc-acdm",
@@ -40,5 +41,6 @@ def test_predict_salary_2():
         "sex": "Male",
         "hoursPerWeek": 50,
         "nativeCountry": "United-States"
-    }).json()
-    assert connect
+    })
+    assert connect.status_code == 200
+    assert connect.json() == {"salary": "<=50K"}

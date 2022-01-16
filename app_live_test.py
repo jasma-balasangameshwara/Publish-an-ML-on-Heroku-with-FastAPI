@@ -19,4 +19,4 @@ response = requests.post(
 )
 
 print(response.status_code)
-print(response.url)
+print(response.json())
