@@ -14,7 +14,7 @@ data = {
 }
 
 response = requests.post(
-    url='https://ml-heroku-fastapi.herokuapp.com/prediction/',
+    url='https://ml-heroku-fastapi.herokuapp.com/prediction',
     json=data
 )
 

@@ -1,5 +1,5 @@
 # Script to train machine learning model.
-
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 from sklearn.ensemble import GradientBoostingClassifier
@@ -15,9 +15,7 @@ import logging
 
 # Add code to load in the data.
 def data_split():
-    data = clean(
-        "data/raw/census.csv",
-        "data/processed/cleaned_census.csv")
+    data = pd.read_csv("data/processed/cleaned_census.csv")
     train_set, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
@@ -86,6 +84,7 @@ def score(test):
 
             print(fbeta, precision, recall)
             logging.info(fbeta, precision, recall)
+            return '>50K' if pred_y[0] else '<=50K'
 
 
 if __name__ == '__main__':

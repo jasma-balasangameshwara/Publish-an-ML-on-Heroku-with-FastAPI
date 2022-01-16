@@ -24,8 +24,8 @@ def test_predict_salary_1():
         "hoursPerWeek": 50,
         "nativeCountry": "United-States"
     }
-    connect = home.post("/prediction/", json=data).json()
-    assert connect
+    connect = home.post("/prediction/", json=data)
+    assert connect.status_code == 200
 
 
 def test_predict_salary_2():
