@@ -50,4 +50,6 @@ jobs:
         dvc pull
         
     - name: Run pytest
+      env:
+        DB_URL: ${{ github.workplace }}/starter/data/raw/census.csv
       run: pytest
