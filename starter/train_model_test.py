@@ -6,26 +6,13 @@ from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 from sklearn.model_selection import train_test_split
 
 
-def clean(input_path, output_path):
-    census_df = pd.read_csv(input_path)
-    census_df.replace({'?': None}, inplace=True)
-    census_df = census_df.dropna()
-    census_df.columns = census_df.columns.str.strip()
-    census_df.drop("fnlgt", axis="columns", inplace=True)
-    census_df.drop("education-num", axis="columns", inplace=True)
-    census_df.to_csv(output_path, index=False)
-    return census_df
-
-
 def test_data_split():
     data = 'data/raw/census.csv'
     assert len(data) != 0
 
 
 def test_model_train_1():
-    data = clean(
-        "data/raw/census.csv",
-        "data/processed/cleaned_census.csv")
+    data = pd.read_csv("data/processed/cleaned_census.csv")
     train, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
@@ -46,9 +33,7 @@ def test_model_train_1():
 
 
 def test_model_train_2():
-    data = clean(
-        "data/raw/census.csv",
-        "data/processed/cleaned_census.csv")
+    data = pd.read_csv("data/processed/cleaned_census.csv")
     train, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
