@@ -3,8 +3,18 @@ import numpy as np
 import pytest
 import train_model
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
-from starter.eda import clean
 from sklearn.model_selection import train_test_split
+
+
+def clean(input_path, output_path):
+    census_df = pd.read_csv(input_path)
+    census_df.replace({'?': None}, inplace=True)
+    census_df = census_df.dropna()
+    census_df.columns = census_df.columns.str.strip()
+    census_df.drop("fnlgt", axis="columns", inplace=True)
+    census_df.drop("education-num", axis="columns", inplace=True)
+    census_df.to_csv(output_path, index=False)
+    return census_df
 
 
 def test_data_split():
