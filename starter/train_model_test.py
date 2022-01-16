@@ -3,6 +3,8 @@ import numpy as np
 import pytest
 import train_model
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
+from starter.eda import clean
+from sklearn.model_selection import train_test_split
 
 
 def test_data_split():
@@ -11,7 +13,10 @@ def test_data_split():
 
 
 def test_model_train_1():
-    _, train, _, _ = train_model.data_split()
+    data = clean(
+        "data/raw/census.csv",
+        "data/processed/cleaned_census.csv")
+    train, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
         "education",
@@ -31,7 +36,10 @@ def test_model_train_1():
 
 
 def test_model_train_2():
-    _, train, test, _ = train_model.data_split()
+    data = clean(
+        "data/raw/census.csv",
+        "data/processed/cleaned_census.csv")
+    train, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
         "education",
