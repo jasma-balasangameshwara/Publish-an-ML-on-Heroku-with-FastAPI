@@ -1,5 +1,0 @@
-outs:
-- md5: 6a729ee69e9e4cb91b6e8e94061a3513
-  size: 3700586
-  path: census.csv
-  isexec: true

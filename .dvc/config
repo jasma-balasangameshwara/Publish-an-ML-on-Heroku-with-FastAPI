@@ -1,4 +1,0 @@
-[core]
-    remote = s3-bucket
-['remote "s3-bucket"']
-    url = s3://ml-heroku-fastapi-bucket
