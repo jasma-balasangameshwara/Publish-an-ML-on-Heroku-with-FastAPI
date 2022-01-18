@@ -45,9 +45,7 @@ jobs:
       uses: iterative/setup-dvc@v1
       
     - name: DVC
-      run: |
-        dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket -f
-        dvc pull
+      run: dvc pull
         
     - name: Run pytest
       run: pytest
