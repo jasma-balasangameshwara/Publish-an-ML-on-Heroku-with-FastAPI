@@ -10,8 +10,10 @@ def data_read():
     return processed_dataframe
 
 
-def test_nulls(data_read):
-    assert data_read.shape == data_read.dropna().shape
+def test_nulls():
+    dataframe = pd.read_csv("data/raw/census.csv", skipinitialspace=True)
+    processed_dataframe = starter.eda.clean(dataframe)
+    assert processed_dataframe.shape == processed_dataframe.dropna().shape
 
 
 def test_question_marks(data_read):
