@@ -47,10 +47,7 @@ jobs:
     - name: DVC
       run: |
         dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket -f
-        dvc status
+        dvc pull
         
     - name: Run pytest
-      env:
-        DB_URL: ${{ github.workplace }}/starter/data/raw/census.csv
-        RAW_FOLDER: ${{ github.workplace }}/starter/data/raw/
       run: pytest
