@@ -1,9 +1,4 @@
 [core]
     remote = s3-bucket
-    autostage = true
-['remote "s3-remote"']
-    url = s3://ml-heroku-fastapi-bucket
-['remote "localremote"']
-    url = /data/
 ['remote "s3-bucket"']
     url = s3://ml-heroku-fastapi-bucket
