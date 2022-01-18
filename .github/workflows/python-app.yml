@@ -47,6 +47,7 @@ jobs:
     - name: DVC
       run: |
         dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket -f
+        dvc status
         
     - name: Run pytest
       run: pytest
