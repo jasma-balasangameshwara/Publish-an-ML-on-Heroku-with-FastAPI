@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def clean(input_path, output_path):
-    census_df = pd.read_csv(input_path)
+    census_df = pd.read_csv(input_path, skipinitialspace=True)
     census_df.replace({'?': None}, inplace=True)
     census_df = census_df.dropna()
     census_df.columns = census_df.columns.str.strip()
