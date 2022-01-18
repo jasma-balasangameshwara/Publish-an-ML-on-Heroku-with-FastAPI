@@ -5,8 +5,9 @@ import starter.eda
 
 @pytest.fixture
 def data_read():
-    dataframe = starter.eda.clean("data/raw/census.csv", "data/processed/cleaned_census.csv")
-    return dataframe
+    dataframe = pd.read_csv("data/raw/census.csv", skipinitialspace=True)
+    processed_dataframe = starter.eda.clean(dataframe)
+    return processed_dataframe
 
 
 def test_nulls(data_read):
