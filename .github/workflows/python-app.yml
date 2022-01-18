@@ -46,7 +46,7 @@ jobs:
       
     - name: Pull data from DVC
       run: |
-        dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket
+        dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket -f
         dvc pull
         
     - name: Run pytest
