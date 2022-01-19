@@ -65,7 +65,7 @@ def index():
     return {"Welcome Success"}
 
 
-@app.post("/prediction")
+@app.post("/")
 async def predict_salary(data: Person):
     model = load(
         "starter/model/model.joblib")
@@ -98,8 +98,6 @@ async def predict_salary(data: Person):
         "native-country",
     ])
     x, _, _, _ = process_data(dataframe, training=False, encoder=encoder, lb=lb)
-
     prediction = inference(model, x)
-
-    y_result = lb.inverse_transform(prediction)[0]
-    return {"salary": y_result}
+    #y_result = lb.inverse_transform(prediction)[0]
+    return {"income": prediction}

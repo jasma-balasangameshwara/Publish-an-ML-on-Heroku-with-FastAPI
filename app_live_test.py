@@ -1,20 +1,20 @@
 import requests
 
 data = {
-    "age": 47,
-    "workclass": "Private",
-    "education": "Assoc-acdm",
-    "marital_status": "Never-married",
-    "occupation": "Sales",
-    "relationship": "Not-in-family",
-    "race": "Black",
+    "age": 30,
+    "workclass": "State-gov",
+    "education": "Bachelors",
+    "marital_status": "Married-civ-spouse",
+    "occupation": "Prof-specialty",
+    "relationship": "Husband",
+    "race": "Asian-Pac-Islander",
     "sex": "Male",
-    "hours_per_week": 55,
-    "native_country": "United-States",
+    "hours_per_week": 40,
+    "native_country": "India"
 }
 
 response = requests.post(
-    url='https://ml-heroku-fastapi.herokuapp.com/prediction',
+    url='https://ml-heroku-fastapi.herokuapp.com/',
     json=data
 )
 

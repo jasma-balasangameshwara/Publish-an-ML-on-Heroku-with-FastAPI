@@ -101,7 +101,7 @@ def score(test, model, encoder, lb):
 
 def inference(model, data):
     preds_y = model.predict(data)
-    return preds_y
+    return '>50K' if preds_y[0] else '<=50K'
 
 
 if __name__ == '__main__':
