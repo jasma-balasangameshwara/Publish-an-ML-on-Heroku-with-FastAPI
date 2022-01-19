@@ -14,7 +14,7 @@ import logging
 
 # Add code to load in the data.
 def data_split():
-    data = pd.read_csv("data/processed/cleaned_census.csv")
+    data = pd.read_csv("cleaned_census.csv")
     train_set, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
@@ -28,11 +28,14 @@ def data_split():
     return data, train_set, test, categorical_features
 
 
-def process_data(train, training=True, encoder=None, lb=None):
+def process_data(train, training=True, encoder=None, lb=None, label=None):
     _, _, _, categorical_features = data_split()
+    if label is not None:
+        y_train = train["salary"]
+        train = train.drop(["salary"], axis=1)
+    else:
+        y_train = np.array([])
 
-    y_train = train["salary"]
-    train = train.drop(["salary"], axis=1)
     x_categorical = train[categorical_features].values
     x_continuous = train.drop(*[categorical_features], axis=1)
 
@@ -43,7 +46,10 @@ def process_data(train, training=True, encoder=None, lb=None):
         y_train = lb.fit_transform(y_train.values).ravel()
     else:
         x_categorical = encoder.transform(x_categorical)
-        y_train = lb.transform(y_train.values).ravel()
+        try:
+            y_train = lb.transform(y_train.values).ravel()
+        except AttributeError:
+            pass
     x_train = np.concatenate([x_continuous, x_categorical], axis=1)
 
     return x_train, y_train, encoder, lb
@@ -51,7 +57,7 @@ def process_data(train, training=True, encoder=None, lb=None):
 
 def model_train():
     _, train, test, categorical_features = data_split()
-    x_train, y_train, encoder, lb = process_data(train, training=True)
+    x_train, y_train, encoder, lb = process_data(train, training=True, label="salary")
     model = GradientBoostingClassifier(n_estimators=100)
     model.fit(x_train, y_train)
     dump(model,
@@ -76,7 +82,7 @@ def score(test, model, encoder, lb):
     for each_category in categorical_features:
         for index in test[each_category].unique():
             unique_df = test[test[each_category] == index]
-            x_test, y_test, _, _ = process_data(unique_df, training=False, encoder=encoder, lb=lb)
+            x_test, y_test, _, _ = process_data(unique_df, training=False, encoder=encoder, lb=lb, label="salary")
 
             pred_y = model.predict(x_test)
 
@@ -95,6 +101,11 @@ def score(test, model, encoder, lb):
     return '>50K' if pred_y[0] else '<=50K'
 
 
+def inference(model, data):
+    preds_y = model.predict(data)
+    return preds_y
+
+
 if __name__ == '__main__':
     model_train()
     _, _, tests, _ = data_split()
@@ -105,3 +116,4 @@ if __name__ == '__main__':
     lb1 = load(
         "model/lb.joblib")
     score(tests, model1, encoder1, lb1)
+

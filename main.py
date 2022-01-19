@@ -1,10 +1,13 @@
 # Put the code for your API here.
 import os
+
+import numpy as np
+import pandas as pd
 from fastapi import FastAPI
 # BaseModel from Pydantic is used to define data objects.
 from pydantic import BaseModel, Field
 from fastapi.encoders import jsonable_encoder
-from starter.train_model import score
+from starter.train_model import score, process_data, inference
 from joblib import dump, load
 
 
@@ -42,13 +45,39 @@ def index():
 
 @app.post("/prediction")
 async def predict_salary(data: Person):
-    data_json = jsonable_encoder(data)
     model = load(
         "starter/model/model.joblib")
     encoder = load(
         "starter/model/encoder.joblib")
     lb = load(
         "starter/model/lb.joblib")
-    prediction = score(data_json, model, encoder, lb)
-    assert prediction == "<=50K"
-    return {"salary": prediction}
+
+    array = np.array([[data.age,
+                       data.workclass,
+                       data.education,
+                       data.marital_status,
+                       data.occupation,
+                       data.relationship,
+                       data.race,
+                       data.sex,
+                       data.hours_per_week,
+                       data.native_country]])
+
+    dataframe = pd.DataFrame(data=array, columns=[
+        "age",
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "hours-per-week",
+        "native-country",
+    ])
+    x, _, _, _ = process_data(dataframe, training=False, encoder=encoder, lb=lb)
+
+    prediction = inference(model, x)
+
+    y = lb.inverse_transform(prediction)[0]
+    return {"salary": y}
