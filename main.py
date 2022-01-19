@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from typing import Literal
 from pydantic import BaseModel
 from starter.train_model import process_data, inference
+from fastapi.encoders import jsonable_encoder
 from joblib import load
 
 
@@ -99,5 +100,4 @@ async def predict_salary(data: Person):
     ])
     x, _, _, _ = process_data(dataframe, training=False, encoder=encoder, lb=lb)
     prediction = inference(model, x)
-    #y_result = lb.inverse_transform(prediction)[0]
     return {"income": prediction}
