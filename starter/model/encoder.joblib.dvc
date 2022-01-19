@@ -1,0 +1,5 @@
+outs:
+- md5: b87372b32da5178470071c2216a9a91b
+  size: 4000
+  path: encoder.joblib
+  isexec: true
