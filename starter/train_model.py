@@ -98,8 +98,6 @@ def score(test, model, encoder, lb):
         for value in sliced:
             out.write(value + '\n')
 
-    return '>50K' if pred_y[0] else '<=50K'
-
 
 def inference(model, data):
     preds_y = model.predict(data)

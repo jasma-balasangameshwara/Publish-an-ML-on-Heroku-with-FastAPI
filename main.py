@@ -4,35 +4,57 @@ import os
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI
-# BaseModel from Pydantic is used to define data objects.
-from pydantic import BaseModel, Field
-from fastapi.encoders import jsonable_encoder
-from starter.train_model import score, process_data, inference
-from joblib import dump, load
+from typing import Literal
+from pydantic import BaseModel
+from starter.train_model import process_data, inference
+from joblib import load
 
 
 app = FastAPI()
 
 
 class Person(BaseModel):
-    age: int = Field(..., example=32)
-    workclass: str = Field(..., example="Private")
-    education: str = Field(..., example="Assoc-acdm")
-    marital_status: str = Field(..., example="Never-married")
-    occupation: str = Field(..., example="Sales")
-    relationship: str = Field(..., example="Not-in-family")
-    race: str = Field(..., example="Black")
-    sex: str = Field(..., example="Female")
-    hours_per_week: int = Field(..., example=50)
-    native_country: str = Field(..., example="United-States")
+    age: int
+    workclass: Literal[
+        'State-gov', 'Self-emp-not-inc', 'Private', 'Federal-gov',
+        'Local-gov', 'Self-emp-inc', 'Without-pay']
+    education: Literal[
+        'Bachelors', 'HS-grad', '11th', 'Masters', '9th',
+        'Some-college',
+        'Assoc-acdm', '7th-8th', 'Doctorate', 'Assoc-voc', 'Prof-school',
+        '5th-6th', '10th', 'Preschool', '12th', '1st-4th']
+    marital_status: Literal[
+        'Never-married', 'Married-civ-spouse', 'Divorced',
+        'Married-spouse-absent', 'Separated', 'Married-AF-spouse',
+        'Widowed']
+    occupation: Literal[
+        'Adm-clerical', 'Exec-managerial', 'Handlers-cleaners',
+        'Prof-specialty', 'Other-service', 'Sales', 'Transport-moving',
+        'Farming-fishing', 'Machine-op-inspct', 'Tech-support',
+        'Craft-repair', 'Protective-serv', 'Armed-Forces',
+        'Priv-house-serv']
+    relationship: Literal[
+        'Not-in-family', 'Husband', 'Wife', 'Own-child',
+        'Unmarried', 'Other-relative']
+    race: Literal[
+        'White', 'Black', 'Asian-Pac-Islander', 'Amer-Indian-Eskimo',
+        'Other']
+    sex: Literal['Male', 'Female']
+    hours_per_week: int
+    native_country: Literal[
+        'United-States', 'Cuba', 'Jamaica', 'India', 'Mexico',
+        'Puerto-Rico', 'Honduras', 'England', 'Canada', 'Germany', 'Iran',
+        'Philippines', 'Poland', 'Columbia', 'Cambodia', 'Thailand',
+        'Ecuador', 'Laos', 'Taiwan', 'Haiti', 'Portugal',
+        'Dominican-Republic', 'El-Salvador', 'France', 'Guatemala',
+        'Italy', 'China', 'South', 'Japan', 'Yugoslavia', 'Peru',
+        'Outlying-US(Guam-USVI-etc)', 'Scotland', 'Trinadad&Tobago',
+        'Greece', 'Nicaragua', 'Vietnam', 'Hong', 'Ireland', 'Hungary',
+        'Holand-Netherlands']
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
-    os.system('rm -rf .dvc/cache')
-    os.system('rm -rf .dvc/tmp/lock')
-    os.system('dvc config core.hardlink_lock true')
-    os.system("dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket")
     if os.system("dvc pull") != 0:
         exit("dvc pull failed")
     os.system("rm -rf .dvc .apt/usr/lib/dvc")
@@ -79,5 +101,5 @@ async def predict_salary(data: Person):
 
     prediction = inference(model, x)
 
-    y = lb.inverse_transform(prediction)[0]
-    return {"salary": y}
+    y_result = lb.inverse_transform(prediction)[0]
+    return {"salary": y_result}
