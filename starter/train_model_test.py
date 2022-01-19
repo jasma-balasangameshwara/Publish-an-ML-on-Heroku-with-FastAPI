@@ -9,9 +9,8 @@ def test_data_split():
     assert len(data) != 0
 
 
-@pytest.fixture(scope='session')
 def test_model_train_1():
-    data = pd.read_csv("data/processed/cleaned_census.csv")
+    data = pd.read_csv("cleaned_census.csv")
     train, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
@@ -31,9 +30,8 @@ def test_model_train_1():
     assert len(x_categorical) != 0
 
 
-@pytest.fixture(scope='session')
 def test_model_train_2():
-    data = pd.read_csv("data/processed/cleaned_census.csv")
+    data = pd.read_csv("cleaned_census.csv")
     train, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
