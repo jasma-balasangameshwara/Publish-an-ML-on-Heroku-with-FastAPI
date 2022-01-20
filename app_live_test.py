@@ -19,5 +19,5 @@ response = requests.post(
 )
 
 print(response.status_code)
-print(response.json())
+#print(response.json())
 print(response.content)

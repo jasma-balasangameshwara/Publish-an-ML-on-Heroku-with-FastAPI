@@ -14,7 +14,7 @@ import logging
 
 # Add code to load in the data.
 def data_split():
-    data = pd.read_csv("cleaned_census.csv")
+    data = pd.read_csv("cleaned_census.csv", index_col=None)
     train_set, test = train_test_split(data, test_size=0.20)
     categorical_features = [
         "workclass",
@@ -28,36 +28,84 @@ def data_split():
     return data, train_set, test, categorical_features
 
 
-def process_data(train, training=True, encoder=None, lb=None, label=None):
-    _, _, _, categorical_features = data_split()
-    if label is not None:
-        y_train = train["salary"]
-        train = train.drop(["salary"], axis=1)
-    else:
-        y_train = np.array([])
+def process_data(
+    X, categorical_features=[], label=None, training=True, encoder=None, lb=None
+):
+    """ Process the data used in the machine learning pipeline.
+    Processes the data using one hot encoding for the categorical features and a
+    label binarizer for the labels. This can be used in either training or
+    inference/validation.
+    Note: depending on the type of model used, you may want to add in functionality that
+    scales the continuous data.
+    Inputs
+    ------
+    X : pd.DataFrame
+        Dataframe containing the features and label. Columns in `categorical_features`
+    categorical_features: list[str]
+        List containing the names of the categorical features (default=[])
+    label : str
+        Name of the label column in `X`. If None, then an empty array will be returned
+        for y (default=None)
+    training : bool
+        Indicator if training mode or inference/validation mode.
+    encoder : sklearn.preprocessing._encoders.OneHotEncoder
+        Trained sklearn OneHotEncoder, only used if training=False.
+    lb : sklearn.preprocessing._label.LabelBinarizer
+        Trained sklearn LabelBinarizer, only used if training=False.
+    Returns
+    -------
+    X : np.array
+        Processed data.
+    y : np.array
+        Processed labels if labeled=True, otherwise empty np.array.
+    encoder : sklearn.preprocessing._encoders.OneHotEncoder
+        Trained OneHotEncoder if training is True, otherwise returns the encoder passed
+        in.
+    lb : sklearn.preprocessing._label.LabelBinarizer
+        Trained LabelBinarizer if training is True, otherwise returns the binarizer
+        passed in.
+    """
 
-    x_categorical = train[categorical_features].values
-    x_continuous = train.drop(*[categorical_features], axis=1)
+    if label is not None:
+        y = X[label]
+        X = X.drop([label], axis=1)
+    else:
+        y = np.array([])
+
+    X_categorical = X[categorical_features].values
+    X_continuous = X.drop(*[categorical_features], axis=1)
 
     if training is True:
         encoder = OneHotEncoder(sparse=False, handle_unknown="ignore")
         lb = LabelBinarizer()
-        x_categorical = encoder.fit_transform(x_categorical)
-        y_train = lb.fit_transform(y_train.values).ravel()
+        X_categorical = encoder.fit_transform(X_categorical)
+        y = lb.fit_transform(y.values).ravel()
     else:
-        x_categorical = encoder.transform(x_categorical)
+        X_categorical = encoder.transform(X_categorical)
+        #print('-----', X_categorical.shape, X_continuous.shape, X.shape)
         try:
-            y_train = lb.transform(y_train.values).ravel()
+            y = lb.transform(y.values).ravel()
+        # Catch the case where y is None because we're doing inference.
         except AttributeError:
-            pass
-    x_train = np.concatenate([x_continuous, x_categorical], axis=1)
+            y = None
 
-    return x_train, y_train, encoder, lb
+    X = np.concatenate([X_continuous, X_categorical], axis=1)
+
+    return X, y, encoder, lb
 
 
 def model_train():
-    _, train, test, categorical_features = data_split()
-    x_train, y_train, encoder, lb = process_data(train, training=True, label="salary")
+    _, train, test, _ = data_split()
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country", ]
+    x_train, y_train, encoder, lb = process_data(train, categorical_features=cat_features, training=True, label="salary")
     model = GradientBoostingClassifier(n_estimators=100)
     model.fit(x_train, y_train)
     dump(model,
@@ -69,7 +117,7 @@ def model_train():
 
 
 def score(test, model, encoder, lb):
-    categorical_features = [
+    cat_features = [
         "workclass",
         "education",
         "marital-status",
@@ -79,10 +127,10 @@ def score(test, model, encoder, lb):
         "sex",
         "native-country", ]
     sliced = []
-    for each_category in categorical_features:
+    for each_category in cat_features:
         for index in test[each_category].unique():
             unique_df = test[test[each_category] == index]
-            x_test, y_test, _, _ = process_data(unique_df, training=False, encoder=encoder, lb=lb, label="salary")
+            x_test, y_test, _, _ = process_data(unique_df, categorical_features=cat_features, training=False, encoder=encoder, lb=lb, label="salary")
 
             pred_y = model.predict(x_test)
 

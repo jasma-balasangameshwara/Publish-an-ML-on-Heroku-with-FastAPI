@@ -35,16 +35,16 @@ def test_predict_salary_1(home):
 
 def test_predict_salary_2(home):
     data = {
-        "age": 30,
-        "workclass": "State-gov",
-        "education": "Bachelors",
+        "age": 47,
+        "workclass": "Private",
+        "education": "Prof-school",
         "marital_status": "Married-civ-spouse",
         "occupation": "Prof-specialty",
-        "relationship": "Husband",
-        "race": "Asian-Pac-Islander",
-        "sex": "Male",
-        "hours_per_week": 40,
-        "native_country": "India"
+        "relationship": "Wife",
+        "race": "White",
+        "sex": "Female",
+        "hours_per_week": 60,
+        "native_country": "Honduras"
     }
     connect = home.post('/', json=data)
     assert connect.status_code == 200

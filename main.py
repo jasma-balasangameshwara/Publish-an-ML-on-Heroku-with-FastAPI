@@ -5,57 +5,43 @@ import numpy as np
 import pandas as pd
 from fastapi import FastAPI
 from typing import Literal
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from starter.train_model import process_data, inference
 from fastapi.encoders import jsonable_encoder
 from joblib import load
 
-
 app = FastAPI()
+
+cat_features = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country", ]
 
 
 class Person(BaseModel):
-    age: int
-    workclass: Literal[
-        'State-gov', 'Self-emp-not-inc', 'Private', 'Federal-gov',
-        'Local-gov', 'Self-emp-inc', 'Without-pay']
-    education: Literal[
-        'Bachelors', 'HS-grad', '11th', 'Masters', '9th',
-        'Some-college',
-        'Assoc-acdm', '7th-8th', 'Doctorate', 'Assoc-voc', 'Prof-school',
-        '5th-6th', '10th', 'Preschool', '12th', '1st-4th']
-    marital_status: Literal[
-        'Never-married', 'Married-civ-spouse', 'Divorced',
-        'Married-spouse-absent', 'Separated', 'Married-AF-spouse',
-        'Widowed']
-    occupation: Literal[
-        'Adm-clerical', 'Exec-managerial', 'Handlers-cleaners',
-        'Prof-specialty', 'Other-service', 'Sales', 'Transport-moving',
-        'Farming-fishing', 'Machine-op-inspct', 'Tech-support',
-        'Craft-repair', 'Protective-serv', 'Armed-Forces',
-        'Priv-house-serv']
-    relationship: Literal[
-        'Not-in-family', 'Husband', 'Wife', 'Own-child',
-        'Unmarried', 'Other-relative']
-    race: Literal[
-        'White', 'Black', 'Asian-Pac-Islander', 'Amer-Indian-Eskimo',
-        'Other']
-    sex: Literal['Male', 'Female']
-    hours_per_week: int
-    native_country: Literal[
-        'United-States', 'Cuba', 'Jamaica', 'India', 'Mexico',
-        'Puerto-Rico', 'Honduras', 'England', 'Canada', 'Germany', 'Iran',
-        'Philippines', 'Poland', 'Columbia', 'Cambodia', 'Thailand',
-        'Ecuador', 'Laos', 'Taiwan', 'Haiti', 'Portugal',
-        'Dominican-Republic', 'El-Salvador', 'France', 'Guatemala',
-        'Italy', 'China', 'South', 'Japan', 'Yugoslavia', 'Peru',
-        'Outlying-US(Guam-USVI-etc)', 'Scotland', 'Trinadad&Tobago',
-        'Greece', 'Nicaragua', 'Vietnam', 'Hong', 'Ireland', 'Hungary',
-        'Holand-Netherlands']
+    age: int = Field(..., example=32)
+    workclass: str = Field(..., example="Private")
+    education: str = Field(..., example="Assoc-acdm")
+    marital_status: str = Field(..., example="Never-married")
+    occupation: str = Field(..., example="Sales")
+    relationship: str = Field(..., example="Not-in-family")
+    race: str = Field(..., example="Black")
+    sex: str = Field(..., example="Male")
+    hours_per_week: int = Field(..., example=50)
+    native_country: str = Field(..., example="United-States")
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
+    os.system("dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket")
+    os.system('rm -rf .dvc/cache')
+    os.system('rm -rf .dvc/tmp/lock')
+    os.system('dvc config core.hardlink_lock true')
     if os.system("dvc pull") != 0:
         exit("dvc pull failed")
     os.system("rm -rf .dvc .apt/usr/lib/dvc")
@@ -98,6 +84,7 @@ async def predict_salary(data: Person):
         "hours-per-week",
         "native-country",
     ])
-    x, _, _, _ = process_data(dataframe, training=False, encoder=encoder, lb=lb)
+
+    x, _, _, _ = process_data(dataframe, categorical_features=cat_features, training=False, encoder=encoder, lb=lb)
     prediction = inference(model, x)
     return {"income": prediction}
