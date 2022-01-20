@@ -1,16 +1,16 @@
 import requests
 
 data = {
-    "age": 30,
-    "workclass": "State-gov",
+    "age": 56,
+    "workclass": "Local-gov",
     "education": "Bachelors",
     "marital_status": "Married-civ-spouse",
-    "occupation": "Prof-specialty",
+    "occupation": "Tech-support",
     "relationship": "Husband",
-    "race": "Asian-Pac-Islander",
+    "race": "White",
     "sex": "Male",
     "hours_per_week": 40,
-    "native_country": "India"
+    "native_country": "United-States"
 }
 
 response = requests.post(
@@ -20,4 +20,3 @@ response = requests.post(
 
 print(response.status_code)
 print(response.json())
-print(response.content)

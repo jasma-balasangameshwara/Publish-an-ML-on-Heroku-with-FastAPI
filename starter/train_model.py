@@ -138,7 +138,7 @@ def score(test, model, encoder, lb):
             precision = precision_score(y_test, pred_y, zero_division=1)
             recall = recall_score(y_test, pred_y, zero_division=1)
 
-            print(fbeta, precision, recall)
+            #print(fbeta, precision, recall)
             logging.info(fbeta, precision, recall)
             line = str(each_category) + str(index) + str(fbeta) + str(precision) + str(recall)
             sliced.append(line)
@@ -149,7 +149,7 @@ def score(test, model, encoder, lb):
 
 def inference(model, data):
     preds_y = model.predict(data)
-    return '>50K' if preds_y else '<=50K'
+    return '>50K' if preds_y[0] else '<=50K'
 
 
 if __name__ == '__main__':
