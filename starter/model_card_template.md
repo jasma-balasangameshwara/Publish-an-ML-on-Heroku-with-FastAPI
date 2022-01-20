@@ -21,4 +21,4 @@ _Precision, Recall and fbeta are the metrics used to measure the model performan
 Data related to race and gender. 
 
 ## Caveats and Recommendations
-NIL
+Some column names have '-' symbol in the data files. This has to be taken care of while referring to category feature names. Also, data had leading whitespaces. Data cleaning was performed to remove whitespaces.
