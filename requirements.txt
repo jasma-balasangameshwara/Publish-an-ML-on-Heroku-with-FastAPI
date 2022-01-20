@@ -8,3 +8,5 @@ uvicorn
 gunicorn
 scipy
 aiofiles
+dvc
+boto3
