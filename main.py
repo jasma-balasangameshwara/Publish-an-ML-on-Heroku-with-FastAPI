@@ -38,7 +38,6 @@ class Person(BaseModel):
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
-    os.system("dvc remote add -d s3-bucket s3://ml-heroku-fastapi-bucket")
     os.system('rm -rf .dvc/cache')
     os.system('rm -rf .dvc/tmp/lock')
     os.system('dvc config core.hardlink_lock true')
