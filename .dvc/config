@@ -3,3 +3,5 @@
 ['remote "s3-remote"']
     url = s3://ml-heroku-fastapi-bucket
     credentialpath = ../~/.aws/credentials
+    access_key_id = AKIAZG6YHDX4W74DUQFN
+    secret_access_key = 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
