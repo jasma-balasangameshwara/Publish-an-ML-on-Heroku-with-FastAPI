@@ -48,4 +48,4 @@ def test_predict_salary_2(home):
     }
     connect = home.post('/', json=data)
     assert connect.status_code == 200
-    assert connect.json() == {"income": ">50K"}
+    assert connect.json() == {"income": "<=50K"}
