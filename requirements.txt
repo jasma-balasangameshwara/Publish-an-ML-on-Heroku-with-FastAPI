@@ -8,6 +8,4 @@ uvicorn
 gunicorn
 scipy
 aiofiles
-dvc
-boto3
 dvc[s3]
