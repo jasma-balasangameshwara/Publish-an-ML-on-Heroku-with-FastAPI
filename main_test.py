@@ -30,12 +30,12 @@ def test_predict_salary_1(home):
     }
     connect = home.post('/', json=data)
     assert connect.status_code == 200
-    assert connect.json() == {"income": ">50K"}
+    assert connect.json() == {"income": "<=50K"}
 
 
 def test_predict_salary_2(home):
     data = {
-        "age": 56,
+        "age": 560,
         "workclass": "Local-gov",
         "education": "Bachelors",
         "marital_status": "Married-civ-spouse",
@@ -48,4 +48,4 @@ def test_predict_salary_2(home):
     }
     connect = home.post('/', json=data)
     assert connect.status_code == 200
-    assert connect.json() == {"income": "<=50K"}
+    assert connect.json() == {"income": ">50K"}

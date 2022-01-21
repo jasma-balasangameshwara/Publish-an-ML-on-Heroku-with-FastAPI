@@ -176,7 +176,8 @@ def inference_dict(data, cat_features):
     row_transformed = list()
     row_transformed = np.concatenate([y_continuous, y_category], axis=1)
     preds_in = model.predict(row_transformed)
-    return '<=50K' if preds_in[0] else '>50K'
+    y = lb.inverse_transform(preds_in)[0]
+    return str(y)
 
 
 def inference(model, data):
