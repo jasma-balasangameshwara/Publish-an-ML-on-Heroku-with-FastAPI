@@ -71,7 +71,6 @@ async def predict_salary(data: Person):
                        data.sex,
                        data.hours_per_week,
                        data.native_country]])
-
     dataframe = pd.DataFrame(data=array, columns=[
         "age",
         "workclass",
@@ -84,15 +83,14 @@ async def predict_salary(data: Person):
         "hours-per-week",
         "native-country",
     ])
-
     x, _, _, _ = process_data(dataframe, categorical_features=cat_features, training=False, encoder=encoder, lb=lb)
-    
+
     prediction = inference(model, x)
     '''
     prediction = inference_dict(data_json, model, encoder, lb, cat_features)
-    '''if prediction == '0':
+    if prediction == '0':
         pred = '<=50K'
     else:
         pred = '>50K'
-        '''
-    return {"income": prediction}
+
+    return {"income": pred}
