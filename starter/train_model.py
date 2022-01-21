@@ -177,7 +177,7 @@ def inference_dict(data, cat_features):
     row_transformed = np.concatenate([y_continuous, y_category], axis=1)
     preds_in = model.predict(row_transformed)
     y = lb.inverse_transform(preds_in)[0]
-    return str(y)
+    return y
 
 
 def inference(model, data):
