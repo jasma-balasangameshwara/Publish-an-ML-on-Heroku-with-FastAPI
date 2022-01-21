@@ -29,7 +29,7 @@ def data_split():
 
 
 def process_data(
-    X, categorical_features=[], label=None, training=True, encoder=None, lb=None
+        X, categorical_features=[], label=None, training=True, encoder=None, lb=None
 ):
     """ Process the data used in the machine learning pipeline.
     Processes the data using one hot encoding for the categorical features and a
@@ -82,7 +82,7 @@ def process_data(
         y = lb.fit_transform(y.values).ravel()
     else:
         X_categorical = encoder.transform(X_categorical)
-        #print('-----', X_categorical.shape, X_continuous.shape, X.shape)
+        # print('-----', X_categorical.shape, X_continuous.shape, X.shape)
         try:
             y = lb.transform(y.values).ravel()
         # Catch the case where y is None because we're doing inference.
@@ -105,7 +105,8 @@ def model_train():
         "race",
         "sex",
         "native-country", ]
-    x_train, y_train, encoder, lb = process_data(train, categorical_features=cat_features, training=True, label="salary")
+    x_train, y_train, encoder, lb = process_data(train, categorical_features=cat_features, training=True,
+                                                 label="salary")
     model = GradientBoostingClassifier(n_estimators=100)
     model.fit(x_train, y_train)
     dump(model,
@@ -130,7 +131,8 @@ def score(test, model, encoder, lb):
     for each_category in cat_features:
         for index in test[each_category].unique():
             unique_df = test[test[each_category] == index]
-            x_test, y_test, _, _ = process_data(unique_df, categorical_features=cat_features, training=False, encoder=encoder, lb=lb, label="salary")
+            x_test, y_test, _, _ = process_data(unique_df, categorical_features=cat_features, training=False,
+                                                encoder=encoder, lb=lb, label="salary")
 
             pred_y = model.predict(x_test)
 
@@ -138,13 +140,41 @@ def score(test, model, encoder, lb):
             precision = precision_score(y_test, pred_y, zero_division=1)
             recall = recall_score(y_test, pred_y, zero_division=1)
 
-            #print(fbeta, precision, recall)
+            # print(fbeta, precision, recall)
             logging.info(fbeta, precision, recall)
             line = str(each_category) + str(index) + str(fbeta) + str(precision) + str(recall)
             sliced.append(line)
     with open('data/raw/slice_output.txt', 'w') as out:
         for value in sliced:
             out.write(value + '\n')
+
+
+def inference_dict(data, cat_features):
+    model = load(
+        "starter/model/model.joblib")
+    encoder = load(
+        "starter/model/encoder.joblib")
+    lb = load(
+        "starter/model/lb.joblib")
+
+
+    X_categorical = list()
+    X_continuous = list()
+
+    for key, value in data.items():
+        mod_key = key.replace('_', '-')
+        if mod_key in cat_features:
+            X_categorical.append(value)
+        else:
+            X_continuous.append(value)
+
+    y_category = encoder.transform([X_categorical])
+    y_continuous = np.asarray([X_continuous])
+
+    row_transformed = list()
+    row_transformed = np.concatenate([y_continuous, y_category], axis=1)
+    preds_in = model.predict(row_transformed)
+    return '>50K' if preds_in[0] else '<=50K'
 
 
 def inference(model, data):
@@ -162,4 +192,3 @@ if __name__ == '__main__':
     lb1 = load(
         "model/lb.joblib")
     score(tests, model1, encoder1, lb1)
-

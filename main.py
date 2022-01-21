@@ -6,7 +6,7 @@ import pandas as pd
 from fastapi import FastAPI
 from typing import Literal
 from pydantic import BaseModel, Field
-from starter.train_model import process_data, inference
+from starter.train_model import process_data, inference, inference_dict
 from fastapi.encoders import jsonable_encoder
 from joblib import load
 
@@ -24,15 +24,15 @@ cat_features = [
 
 
 class Person(BaseModel):
-    age: int = Field(..., example=32)
-    workclass: str = Field(..., example="Private")
-    education: str = Field(..., example="Assoc-acdm")
-    marital_status: str = Field(..., example="Never-married")
-    occupation: str = Field(..., example="Sales")
-    relationship: str = Field(..., example="Not-in-family")
-    race: str = Field(..., example="Black")
+    age: int = Field(..., example=56)
+    workclass: str = Field(..., example="Local-gov")
+    education: str = Field(..., example="Bachelors")
+    marital_status: str = Field(..., example="Married-civ-spouse")
+    occupation: str = Field(..., example="Tech-support")
+    relationship: str = Field(..., example="Husband")
+    race: str = Field(..., example="White")
     sex: str = Field(..., example="Male")
-    hours_per_week: int = Field(..., example=50)
+    hours_per_week: int = Field(..., example=40)
     native_country: str = Field(..., example="United-States")
 
 
@@ -53,14 +53,15 @@ def index():
 
 @app.post("/")
 async def predict_salary(data: Person):
-    model = load(
-        "starter/model/model.joblib")
-    encoder = load(
-        "starter/model/encoder.joblib")
-    lb = load(
-        "starter/model/lb.joblib")
+    data_json = jsonable_encoder(data)
+    #model = load(
+       # "starter/model/model.joblib")
+    #encoder = load(
+     #   "starter/model/encoder.joblib")
+    #lb = load(
+      #  "starter/model/lb.joblib")
 
-    array = np.array([[data.age,
+    '''array = np.array([[data.age,
                        data.workclass,
                        data.education,
                        data.marital_status,
@@ -85,5 +86,8 @@ async def predict_salary(data: Person):
     ])
 
     x, _, _, _ = process_data(dataframe, categorical_features=cat_features, training=False, encoder=encoder, lb=lb)
+    
     prediction = inference(model, x)
+    '''
+    prediction = inference_dict(data_json, cat_features)
     return {"income": prediction}
