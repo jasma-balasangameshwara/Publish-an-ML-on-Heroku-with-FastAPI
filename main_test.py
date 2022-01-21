@@ -3,19 +3,17 @@ from fastapi.testclient import TestClient
 from main import app
 
 
-@pytest.fixture
-def home():
-    homeq = TestClient(app)
-    return homeq
+
+home = TestClient(app)
 
 
-def test_index(home):
+def test_index():
     connect = home.get("/")
     assert connect.status_code == 200
     assert connect.json() == ["Welcome Success"]
 
 
-def test_predict_salary_1(home):
+def test_predict_salary_1():
     data1 = {
         "age": 19,
         "workclass": "Private",
@@ -33,7 +31,7 @@ def test_predict_salary_1(home):
     assert connect.json() == {"income": '<=50K'}
 
 
-def test_predict_salary_2(home):
+def test_predict_salary_2():
     data2 = {
         "age": 56,
         "workclass": "Local-gov",
