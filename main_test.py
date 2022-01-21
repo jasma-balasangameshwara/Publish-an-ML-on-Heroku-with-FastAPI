@@ -16,25 +16,25 @@ def test_index(home):
 
 
 def test_predict_salary_1(home):
-    data = {
-        "age": 39,
-        "workclass": "State-gov",
-        "education": "Bachelors",
+    data1 = {
+        "age": 19,
+        "workclass": "Private",
+        "education": "HS-grad",
         "marital_status": "Never-married",
-        "occupation": "Adm-clerical",
-        "relationship": "Not-in-family",
-        "race": "White",
+        "occupation": "Other-service",
+        "relationship": "Own-child",
+        "race": "Black",
         "sex": "Male",
         "hours_per_week": 40,
         "native_country": "United-States"
     }
-    connect = home.post('/', json=data)
+    connect = home.post('/', json=data1)
     assert connect.status_code == 200
-    assert connect.json() == {"income": "<=50K"}
+    assert connect.json() == {"income": '<=50K'}
 
 
 def test_predict_salary_2(home):
-    data = {
+    data2 = {
         "age": 56,
         "workclass": "Local-gov",
         "education": "Bachelors",
@@ -46,6 +46,6 @@ def test_predict_salary_2(home):
         "hours_per_week": 40,
         "native_country": "United-States"
     }
-    connect = home.post('/', json=data)
+    connect = home.post('/', json=data2)
     assert connect.status_code == 200
-    assert connect.json() == {"income": ">50K"}
+    assert connect.json() == {"income": '>50K'}

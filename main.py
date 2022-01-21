@@ -6,7 +6,7 @@ import pandas as pd
 from fastapi import FastAPI
 from typing import Literal
 from pydantic import BaseModel, Field
-from starter.train_model import process_data, inference, inference_dict
+from starter.train_model import inference_dict
 from fastapi.encoders import jsonable_encoder
 from joblib import load
 
@@ -58,8 +58,8 @@ async def predict_salary(data: Person):
        # "starter/model/model.joblib")
     #encoder = load(
      #   "starter/model/encoder.joblib")
-    #lb = load(
-      #  "starter/model/lb.joblib")
+    lb = load(
+        "starter/model/lb.joblib")
 
     '''array = np.array([[data.age,
                        data.workclass,
