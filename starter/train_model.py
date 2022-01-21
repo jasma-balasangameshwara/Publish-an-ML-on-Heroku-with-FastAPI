@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from joblib import dump, load
 from starter.eda import clean
@@ -107,7 +107,8 @@ def model_train():
         "native-country", ]
     x_train, y_train, encoder, lb = process_data(train, categorical_features=cat_features, training=True,
                                                  label="salary")
-    model = GradientBoostingClassifier(n_estimators=100)
+    model = RandomForestClassifier(
+        random_state=8, max_depth=16, n_estimators=128)
     model.fit(x_train, y_train)
     dump(model,
          "model/model.joblib")
