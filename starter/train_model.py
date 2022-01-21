@@ -15,7 +15,8 @@ import logging
 # Add code to load in the data.
 def data_split():
     data = pd.read_csv("cleaned_census.csv", index_col=None)
-    train_set, test = train_test_split(data, test_size=0.20)
+    train_set, test = train_test_split(
+        data, test_size=0.20, random_state=8, shuffle=True)
     categorical_features = [
         "workclass",
         "education",
@@ -175,7 +176,7 @@ def inference_dict(data, cat_features):
     row_transformed = list()
     row_transformed = np.concatenate([y_continuous, y_category], axis=1)
     preds_in = model.predict(row_transformed)
-    return '>50K' if preds_in[0] else '<=50K'
+    return '<=50K' if preds_in[0] else '>50K'
 
 
 def inference(model, data):
