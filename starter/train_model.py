@@ -151,13 +151,7 @@ def score(test, model, encoder, lb):
             out.write(value + '\n')
 
 
-def inference_dict(data, cat_features):
-    model = load(
-        "starter/model/model.joblib")
-    encoder = load(
-        "starter/model/encoder.joblib")
-    lb = load(
-        "starter/model/lb.joblib")
+def inference_dict(data, model, encoder, lb, cat_features):
 
 
     X_categorical = list()

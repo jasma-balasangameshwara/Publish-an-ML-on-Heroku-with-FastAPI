@@ -54,10 +54,10 @@ def index():
 @app.post("/")
 async def predict_salary(data: Person):
     data_json = jsonable_encoder(data)
-    #model = load(
-       # "starter/model/model.joblib")
-    #encoder = load(
-     #   "starter/model/encoder.joblib")
+    model = load(
+        "starter/model/model.joblib")
+    encoder = load(
+        "starter/model/encoder.joblib")
     lb = load(
         "starter/model/lb.joblib")
 
@@ -89,7 +89,7 @@ async def predict_salary(data: Person):
     
     prediction = inference(model, x)
     '''
-    prediction = inference_dict(data_json, cat_features)
+    prediction = inference_dict(data_json, model, encoder, lb, cat_features)
     '''if prediction == '0':
         pred = '<=50K'
     else:
