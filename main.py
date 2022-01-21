@@ -90,8 +90,9 @@ async def predict_salary(data: Person):
     prediction = inference(model, x)
     '''
     prediction = inference_dict(data_json, cat_features)
-    if prediction == '0':
+    '''if prediction == '0':
         pred = '<=50K'
     else:
         pred = '>50K'
-    return {"income": pred}
+        '''
+    return {"income": prediction}
