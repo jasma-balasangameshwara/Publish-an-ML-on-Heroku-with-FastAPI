@@ -13,7 +13,7 @@ def test_index():
     assert connect.json() == ["Welcome Success"]
 
 
-def test_predict_salary_1():
+def test_predict_1():
     data1 = {
         "age": 19,
         "workclass": "Private",
@@ -31,7 +31,7 @@ def test_predict_salary_1():
     assert connect.json() == {"income": '<=50K'}
 
 
-def test_predict_salary_2():
+def test_salary_2():
     data2 = {
         "age": 56,
         "workclass": "Local-gov",
