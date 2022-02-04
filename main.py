@@ -1,4 +1,4 @@
-# Put the code for your API here.
+# API code
 import os
 
 import numpy as np
