@@ -1,4 +1,4 @@
-#Testing number of test cases
+#Testing to check if the code meets Udacity rubric, sanitycheck.py provided by Udacity
 from os import path
 
 import argparse
